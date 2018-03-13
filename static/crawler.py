@@ -17,28 +17,23 @@ collection = db.tweet
 
 
 class Listener(tweepy.StreamListener):
-    city = ''
-    cnt = 0
-
-    @staticmethod
-    def set_city(city):
-        Listener.city = city
 
     def on_status(self, status):
-        Listener.cnt += 1
-        print(Listener.cnt, " : ", status.text)
-        if status.truncated:
+        txt = ''
+        try:
             txt = status.extended_tweet['full_text']
-        else:
+        except:
             txt = status.text
-        print(status.place.bounding_box.coordinates)
-        # geo = status.place
-        # city = status.place['full_name']
-        # post = {'text': txt, 'city':city, 'geo':geo }
-        # collection.insert(post)
+
+        if 'music' in txt or 'song' in txt or 'sing' in txt or 'concert' in txt or 'sound' in txt or 'pop' in txt or 'audio' in txt or 'album' in txt:
+            city = status.place.name
+            coordinates = status.place.bounding_box.coordinates
+            created_at = status.created_at
+
+            print(txt, " ", city, " ", coordinates, " ", created_at)
 
     def on_error(self, status_code):
-        print(Listener.city, " ", sys.stderr, "Encountered error with status code:", status_code)
+        print(sys.stderr, "Encountered error with status code:", status_code)
         return True
 
     def on_timeout(self):
@@ -53,16 +48,7 @@ def sentiment(data, city):
     print(city, " : ", twit_json['text'], '\n', ss)
 
 
-# def listener(index):
-#     city = location_list[index][0]
-#     coordinate = location_list[index][1]
-#     Listener.set_city(city)
-#     ct = tweepy.streaming.Stream(auth, Listener())
-#     ct.filter(locations=coordinate)
-
-
 if __name__ == '__main__':
     ct = tweepy.streaming.Stream(auth, Listener())
     ct.filter(locations=[-123.915252, 31.991705, -67.665251, 49.068417])
-    # pool = Pool(processes=5)
-    # pool.map(listener, range(0, 6))
+
