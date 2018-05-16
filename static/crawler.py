@@ -3,7 +3,6 @@ import tweepy
 from pymongo import MongoClient
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import nltk
-import numpy
 
 consumer_key = 'cMlGmUqVEl0LHsURqmg3KFJ06'
 consumer_secret = 'pY5AFjmpSt9u511H8Pg6n7bh0njFxIaSzxONwXqqXtzmJGBXQv'
