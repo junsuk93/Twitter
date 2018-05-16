@@ -1,8 +1,9 @@
-import json
 import sys
 import tweepy
-from nltk.sentiment import SentimentIntensityAnalyzer
 from pymongo import MongoClient
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import nltk
+import numpy
 
 consumer_key = 'cMlGmUqVEl0LHsURqmg3KFJ06'
 consumer_secret = 'pY5AFjmpSt9u511H8Pg6n7bh0njFxIaSzxONwXqqXtzmJGBXQv'
@@ -19,18 +20,26 @@ collection = db.tweet
 class Listener(tweepy.StreamListener):
 
     def on_status(self, status):
-        txt = ''
         try:
             txt = status.extended_tweet['full_text']
         except:
             txt = status.text
+        if 'https' in txt:
+            res = txt.split('https')
+            txt = res[0]
 
-        if 'music' in txt or 'song' in txt or 'sing' in txt or 'concert' in txt or 'sound' in txt or 'pop' in txt or 'audio' in txt or 'album' in txt:
-            city = status.place.name
-            coordinates = status.place.bounding_box.coordinates
-            created_at = status.created_at
-
-            print(txt, " ", city, " ", coordinates, " ", created_at)
+        nechunker(txt)
+        # if status.lang == 'en':
+        #     try:
+        #        city = status.place.name
+        #        coordinate = status.place.bounding_box.coordinates[0][0]
+        #        created_at = status.created_at
+        #        sentiment_val = sentiment(txt)
+        #        post = {"text":txt.lower(), "city":city, "coordinate":coordinate, "created_at":created_at, "sentiment":sentiment_val}
+        #        # collection.insert(post)
+        #        print(post)
+        #     except:
+        #         return True
 
     def on_error(self, status_code):
         print(sys.stderr, "Encountered error with status code:", status_code)
@@ -41,14 +50,27 @@ class Listener(tweepy.StreamListener):
         return True
 
 
-def sentiment(data, city):
-    twit_json = json.loads(data)
+def sentiment(text):
     sid = SentimentIntensityAnalyzer()
-    ss = sid.polarity_scores(twit_json['text'])
-    print(city, " : ", twit_json['text'], '\n', ss)
+    ss = sid.polarity_scores(text)
+    return ss
+
+
+def nechunker(text):
+    print("---------------------------")
+    print(text)
+    tokenized_sentence = nltk.word_tokenize(text)
+    tagged_sentence = nltk.pos_tag(tokenized_sentence)
+    chunked_sentence = nltk.ne_chunk(tagged_sentence)
+
+    for t in chunked_sentence.subtrees():
+        if t.label() == 'NE':
+            neword = ""
+            for word in t:
+                neword += word[0]
+            print("ne : " + neword)
 
 
 if __name__ == '__main__':
     ct = tweepy.streaming.Stream(auth, Listener())
     ct.filter(locations=[-123.915252, 31.991705, -67.665251, 49.068417])
-
