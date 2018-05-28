@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Coming Soon - Start Bootstrap Theme</title>
+    <title>Twitter Analyzer</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -37,19 +37,21 @@
               <h1 class="mb-3">Search!</h1>
               <!-- <p class="mb-5">We're working hard to finish the development of this site. Our target launch date is
                 <strong>January 2019</strong>! Sign up for updates using the form below!</p>-->
+                      <form action="main" method="post">
               <div class="input-group input-group-newsletter">
-                <input type="email" class="form-control" placeholder="Enter First Keyword..." aria-label="Enter First Keyword..." aria-describedby="basic-addon">
+                <input type="email" class="form-control" placeholder="Enter First Keyword..." aria-label="Enter First Keyword..." aria-describedby="basic-addon" name="First">
               </div>
                     <br>
                 <div class="input-group input-group-newsletter">
-                <input type="email" class="form-control" placeholder="Enter Second Keyword..." aria-label="Enter Second Keyword..." aria-describedby="basic-addon">
+                <input type="email" class="form-control" placeholder="Enter Second Keyword..." aria-label="Enter Second Keyword..." aria-describedby="basic-addon" name="Second">
                 </div>
                     <br>
                 <div class="input-group input-group-newsletter">
                 <div class="input-group-append" style="margin-left: 310px;">
-                  <button class="btn btn-secondary" type="button">Click Me!</button>
+                  <button class="btn btn-secondary" type="submit" id="btnSearch">Click Me!</button>
                 </div>
                 </div>
+                       </form>
               </div>
             </div>
           </div>
