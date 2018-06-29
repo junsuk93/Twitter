@@ -27,18 +27,18 @@ class Listener(tweepy.StreamListener):
             res = txt.split('https')
             txt = res[0]
 
-        nechunker(txt)
-        # if status.lang == 'en':
-        #     try:
-        #        city = status.place.name
-        #        coordinate = status.place.bounding_box.coordinates[0][0]
-        #        created_at = status.created_at
-        #        sentiment_val = sentiment(txt)
-        #        post = {"text":txt.lower(), "city":city, "coordinate":coordinate, "created_at":created_at, "sentiment":sentiment_val}
-        #        # collection.insert(post)
-        #        print(post)
-        #     except:
-        #         return True
+        if status.lang == 'en':
+            try:
+               city = status.place.name
+               coordinate = status.place.bounding_box.coordinates[0][0]
+               created_at = status.created_at
+               sentiment_val = sentiment(txt)
+               namedentity = nechunker(txt)
+               post = {"text":txt.lower(), "city":city, "coordinate":coordinate, "created_at":created_at, "sentiment":sentiment_val, "NE":namedentity}
+               collection.insert(post)
+            except:
+                print("DB Error")
+                return True
 
     def on_error(self, status_code):
         print(sys.stderr, "Encountered error with status code:", status_code)
@@ -56,19 +56,19 @@ def sentiment(text):
 
 
 def nechunker(text):
-    print("---------------------------")
-    print(text)
     tokenized_sentence = nltk.word_tokenize(text)
     tagged_sentence = nltk.pos_tag(tokenized_sentence)
-    chunked_sentence = nltk.ne_chunk(tagged_sentence)
+    chunked_sentence = nltk.ne_chunk(tagged_sentence, binary = True)
+    result = []
 
     for t in chunked_sentence.subtrees():
+        neword = ""
         if t.label() == 'NE':
-            neword = ""
             for word in t:
                 neword += word[0]
-            print("ne : " + neword)
+            result.append(neword.lower())
 
+    return result
 
 if __name__ == '__main__':
     ct = tweepy.streaming.Stream(auth, Listener())

@@ -1,74 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input</title>
+    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .jumbotron {
+            background-image: url('../static/img/1.jpg');
+            background-size: cover;
+            text-shadow: gray 0.05em 0.05em 0.05em;
+            color:whitesmoke;
+     }
+    </style>
+</head>
+<body>
 
-  <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Twitter Analyzer</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-    <link href="{{ url_for('static',filename='vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{{ url_for('static',filename='css/coming-soon.min.css') }}" rel="stylesheet">
-
-  </head>
-
-  <body>
-
-    <div class="overlay"></div>
-
-    <div class="masthead">
-      <div class="masthead-bg"></div>
-      <div class="container h-100">
-        <div class="row h-100">
-          <div class="col-12 my-auto">
-            <div class="masthead-content text-white py-5 py-md-0">
-              <h1 class="mb-3">Search!</h1>
-              <!-- <p class="mb-5">We're working hard to finish the development of this site. Our target launch date is
-                <strong>January 2019</strong>! Sign up for updates using the form below!</p>-->
-                      <form action="main" method="post">
-              <div class="input-group input-group-newsletter">
-                <input type="email" class="form-control" placeholder="Enter First Keyword..." aria-label="Enter First Keyword..." aria-describedby="basic-addon" name="First">
-              </div>
-                    <br>
-                <div class="input-group input-group-newsletter">
-                <input type="email" class="form-control" placeholder="Enter Second Keyword..." aria-label="Enter Second Keyword..." aria-describedby="basic-addon" name="Second">
-                </div>
-                    <br>
-                <div class="input-group input-group-newsletter">
-                <div class="input-group-append" style="margin-left: 310px;">
-                  <button class="btn btn-secondary" type="submit" id="btnSearch">Click Me!</button>
-                </div>
-                </div>
-                       </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="text-center">Twitter Data Analaysis</h1>
+        <p class="text-center">input two words, and push Find button</p>
     </div>
+</div>
+<div class="container">
+    &nbsp;
+    <h2>Input Two Words</h2>
+    &nbsp;
+    <form action = "http://127.0.0.1:5000/search" method="POST">
+        <div class="form-group">
+            <label for="FirstInput">First Word</label>
+            <input type="text" class="form-control input-lg" id="Input" placeholder="First Word Input" name="Finput">
+        </div>
+        <div class="form-group">
+            <label for="SecondInput">Second Word</label>
+            <input type="text" class="form-control input-lg" id="Input2" placeholder="Second Word Input" name="Sinput">
+        </div>
+        <button type="Find" class="btn btn-primary">Find</button>
+    </form>
+</div>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="{{ url_for('static',filename='vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="{{ url_for('static',filename='vendor/vide/jquery.vide.min.js') }}"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="{{ url_for('static',filename='js/coming-soon.min.js') }}"></script>
-
-  </body>
+</body>
 
 </html>
