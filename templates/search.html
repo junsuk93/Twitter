@@ -95,6 +95,19 @@
             width: 50%;
             margin-top: 75px;
         }
+        table{
+            border-collapse: collapse;
+        }
+        th, td{
+            border:1px solid black;
+            text-align: center;
+            padding: 5px;
+            width: 200px;
+            height: 7px;
+        }
+        th{
+            background-color: #ccc;
+        }
     </style>
 </head>
 <body>
@@ -138,15 +151,28 @@
             </div>
             <div class ="container" id="Analysis">
                 <h1>Analysis</h1>
+                <h6>Top 15 words spoken in Twitter with your input word</h6>
                 <div class="left-box" id="left">
                     <h3>{{ input1 }}</h3>
                     <br><br>
-                    <div id="left-print"></div>
+                    <table>
+                        <thead>
+                            <th>word</th>
+                            <th>count</th>
+                        </thead>
+                        <tbody id="left-table"></tbody>
+                    </table>
                 </div>
                 <div class="right-box" id="right">
                     <h3>{{ input2 }}</h3>
                     <br><br>
-                    <div id="right-print"></div>
+                    <table>
+                        <thead>
+                            <th>word</th>
+                            <th>count</th>
+                        </thead>
+                        <tbody id="right-table"></tbody>
+                    </table>
                 </div>
             </div>
             <div class ="container" id="Charts">
@@ -201,13 +227,24 @@
     }
 
     function Analyze(){
-        var input1 = '{{ analy1 }}';
-        var input2 = '{{ analy2 }}';
+        var input1 ={{ analy1|tojson }};
+        var input2 = {{ analy2|tojson }};
+        var left_t = document.getElementById("left-table");
+        var right_t = document.getElementById("right-table");
 
-        for(var i = 0; i < input1.length; i++)
-        {
-            var key = input1[i];
-            document.getElementById('left-print').innerText += key;
+        for(var i in input1) {
+            var row = left_t.insertRow(left_t.rows.length);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = input1[i][0];
+            cell2.innerHTML = input1[i][1];
+        }
+        for(var i in input2) {
+             var row = right_t.insertRow(right_t.rows.length);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = input2[i][0];
+            cell2.innerHTML = input2[i][1];
         }
     }
 
